@@ -1,11 +1,58 @@
 import s from "./style.module.css";
 import TVShowDetail from "./components/TVShowDetail/TVShowDetail";
-import { useFetchPopulars } from "./hooks/useFetchPopulars";
 import Logo from "./components/Logo/Logo";
 import logo from "./assets/images/logo.png";
+import TVShowListItem from "./components/TVShowListItem/TVShowListItem";
+import { useEffect, useState } from "react";
+import { TVShowAPI } from "./services/api/TVShow";
+import TVShowList from "./components/TVShowList/TVShowList";
 
 export default function App() {
-  const { currentTvShow, error, isLoading } = useFetchPopulars();
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [currentTvShow, setCurrentTvShow] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
+
+  async function fetchPopulars() {
+    setIsLoading(true);
+    try {
+      const results = await TVShowAPI.fetchPopulars();
+      if (results.length > 0) {
+        setCurrentTvShow(results[0]);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function fetchRecommendations(tvShowId) {
+    setIsLoading(true);
+    try {
+      const results = await TVShowAPI.fetchRecommendations(tvShowId);
+      if (results.length > 0) {
+        setRecommendations(results.slice(0, 10));
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchPopulars();
+  }, []);
+
+  useEffect(() => {
+    if (currentTvShow) {
+      fetchRecommendations(currentTvShow.id);
+    }
+  }, [currentTvShow]);
+
+  const handleSetTvShow = (tvShow) => {};
 
   return (
     <div
@@ -35,7 +82,11 @@ export default function App() {
       <div className={s.tv_show_detail}>
         {currentTvShow && <TVShowDetail tvShow={currentTvShow} />}
       </div>
-      <div className={s.recommendations}>Recommendations</div>
+      <div className={s.recommendations}>
+        {recommendations && recommendations.length > 0 && (
+          <TVShowList tvShowList={recommendations} />
+        )}
+      </div>
     </div>
   );
 }
