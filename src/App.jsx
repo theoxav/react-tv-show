@@ -1,6 +1,8 @@
 import s from "./style.module.css";
 import TVShowDetail from "./components/TVShowDetail/TVShowDetail";
 import { useFetchPopulars } from "./hooks/useFetchPopulars";
+import Logo from "./components/Logo/Logo";
+import logo from "./assets/images/logo.png";
 
 export default function App() {
   const { currentTvShow, error, isLoading } = useFetchPopulars();
@@ -19,8 +21,11 @@ export default function App() {
       <div className={s.header}>
         <div className="row">
           <div className="col-4">
-            <div>Logo</div>
-            <div>subtitle</div>
+            <Logo
+              title="WatToWatch"
+              subtitle="Find a show you may like"
+              image={logo}
+            />
           </div>
           <div className="col-md-12 col-lg-4">
             <input style={{ width: "100%" }} type="text" />
