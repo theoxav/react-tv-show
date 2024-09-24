@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import s from "./style.module.css";
+import TVShowDetail from "./components/TVShowDetail/TVShowDetail";
+import { useFetchPopulars } from "./hooks/useFetchPopulars";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { currentTvShow, error, isLoading } = useFetchPopulars();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div
+      className={s.main_container}
+      style={{
+        background: currentTvShow
+          ? `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("${
+              import.meta.env.VITE_BACKDROP_BASE_URL
+            }${currentTvShow?.backdrop_path}") no-repeat center / cover`
+          : "black",
+      }}
+    >
+      <div className={s.header}>
+        <div className="row">
+          <div className="col-4">
+            <div>Logo</div>
+            <div>subtitle</div>
+          </div>
+          <div className="col-md-12 col-lg-4">
+            <input style={{ width: "100%" }} type="text" />
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className={s.tv_show_detail}>
+        {currentTvShow && <TVShowDetail tvShow={currentTvShow} />}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <div className={s.recommendations}>Recommendations</div>
+    </div>
+  );
 }
-
-export default App
