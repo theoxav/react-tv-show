@@ -34,4 +34,21 @@ export class TVShowAPI {
       console.error(error);
     }
   }
+
+  static async fetchByTitle(title) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_TMDB_URL}/search/tv?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&query=${title}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        return data.results;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

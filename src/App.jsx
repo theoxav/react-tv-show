@@ -1,11 +1,13 @@
-import s from "./style.module.css";
+import { useEffect, useState } from "react";
+import { TVShowAPI } from "./services/api/TVShow";
+
 import TVShowDetail from "./components/TVShowDetail/TVShowDetail";
 import Logo from "./components/Logo/Logo";
 import logo from "./assets/images/logo.png";
-import TVShowListItem from "./components/TVShowListItem/TVShowListItem";
-import { useEffect, useState } from "react";
-import { TVShowAPI } from "./services/api/TVShow";
 import TVShowList from "./components/TVShowList/TVShowList";
+import SearchBar from "./components/SearchBar/SearchBar";
+
+import s from "./style.module.css";
 
 export default function App() {
   const [error, setError] = useState(null);
@@ -52,7 +54,12 @@ export default function App() {
     }
   }, [currentTvShow]);
 
-  const handleSetTvShow = (tvShow) => {};
+  const handleSearchTvShow = async (tvShowName) => {
+    const searchResponse = await TVShowAPI.fetchByTitle(tvShowName);
+    if (searchResponse && searchResponse.length > 0) {
+      setCurrentTvShow(searchResponse[0]);
+    }
+  };
 
   return (
     <div
@@ -75,7 +82,7 @@ export default function App() {
             />
           </div>
           <div className="col-md-12 col-lg-4">
-            <input style={{ width: "100%" }} type="text" />
+            <SearchBar onSubmit={handleSearchTvShow} />
           </div>
         </div>
       </div>
@@ -84,7 +91,10 @@ export default function App() {
       </div>
       <div className={s.recommendations}>
         {recommendations && recommendations.length > 0 && (
-          <TVShowList tvShowList={recommendations} />
+          <TVShowList
+            onClickItem={setCurrentTvShow}
+            tvShowList={recommendations}
+          />
         )}
       </div>
     </div>
