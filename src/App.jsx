@@ -8,6 +8,7 @@ import TVShowList from "./components/TVShowList/TVShowList";
 import SearchBar from "./components/SearchBar/SearchBar";
 
 import s from "./style.module.css";
+import { BACKDROP_BASE_URL } from "./config";
 
 export default function App() {
   const [error, setError] = useState(null);
@@ -66,9 +67,7 @@ export default function App() {
       className={s.main_container}
       style={{
         background: currentTvShow
-          ? `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("${
-              import.meta.env.VITE_BACKDROP_BASE_URL
-            }${currentTvShow?.backdrop_path}") no-repeat center / cover`
+          ? `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("${BACKDROP_BASE_URL}${currentTvShow?.backdrop_path}") no-repeat center / cover`
           : "black",
       }}
     >

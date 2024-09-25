@@ -1,10 +1,10 @@
+import { TMDB_URL } from "../../config";
+
 export class TVShowAPI {
   static async fetchPopulars() {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_TMDB_URL}/tv/popular?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }`
+        `${TMDB_URL}/tv/popular?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -19,9 +19,7 @@ export class TVShowAPI {
   static async fetchRecommendations(tvShowId) {
     try {
       const response = await fetch(
-        `${
-          import.meta.env.VITE_TMDB_URL
-        }/tv/${tvShowId}/recommendations?api_key=${
+        `${TMDB_URL}/tv/${tvShowId}/recommendations?api_key=${
           import.meta.env.VITE_TMDB_API_KEY
         }`
       );
@@ -38,7 +36,7 @@ export class TVShowAPI {
   static async fetchByTitle(title) {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_TMDB_URL}/search/tv?api_key=${
+        `${TMDB_URL}/search/tv?api_key=${
           import.meta.env.VITE_TMDB_API_KEY
         }&query=${title}`
       );
