@@ -1,5 +1,9 @@
 # React-TV-Show
 
+<div align="center" style="margin-bottom: 10px;">
+  <img src="./src/assets/demo/home.png" alt="Home" style="margin: 10px;" />
+</div>
+
 React-TV-Show is an application that allows you to search for your favorite movies and provides recommendations based on your searches. It uses Vite for a fast development environment and React for the user interface.
 
 ## Features
